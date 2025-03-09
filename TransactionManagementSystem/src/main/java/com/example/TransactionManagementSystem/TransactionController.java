@@ -1,6 +1,7 @@
 package com.example.TransactionManagementSystem;
 
-import jakarta.transaction.Transactional;
+import com.example.TransactionManagementSystem.Entities.Entities;
+import com.example.TransactionManagementSystem.Entities.TransactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,19 +15,19 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping("/trans")
-    public String addTransactions(@RequestBody List<Entities> entities){
-        System.out.println("Before " +entities);
-        transactionService.addTransaction(entities);
+    public String addTransactions(@RequestBody List<TransactionEntity> entities){
+        List<Entities> entities1 = transactionService.TransactionEntityToEntity(entities);
+        transactionService.addTransaction(entities1);
         return "Added Successfully";
     }
 
     @GetMapping
-    public List<Entities> getAllTransaction(){
+    public List<TransactionEntity> getAllTransaction(){
         return transactionService.getAllTransactions();
     }
 
     @GetMapping("/{category}")
-    public List<Entities> getByCategory(@PathVariable String category){
+    public List<TransactionEntity> getByCategory(@PathVariable String category){
         return transactionService.getByCategory(category);
     }
 }

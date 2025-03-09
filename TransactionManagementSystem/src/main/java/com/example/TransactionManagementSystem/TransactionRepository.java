@@ -1,5 +1,6 @@
 package com.example.TransactionManagementSystem;
 
+import com.example.TransactionManagementSystem.Entities.Entities;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
