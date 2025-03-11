@@ -14,35 +14,35 @@ public class TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
 
-    public void addTransaction(List<Entities> entities){
+    public void addTransaction(List<Entities> entities) {
         transactionRepository.saveAll(entities);
-        System.out.println("After " +transactionRepository.findAll());
+        System.out.println("After " + transactionRepository.findAll());
     }
 
-    public List<TransactionEntity> getAllTransactions(){
+    public List<TransactionEntity> getAllTransactions() {
         List<Entities> entitiesList = transactionRepository.findAll();
         List<TransactionEntity> transactionEntities = new ArrayList<>();
-        for (Entities entities : entitiesList ){
+        for (Entities entities : entitiesList) {
             TransactionEntity transactionEntity = new TransactionEntity(entities);
             transactionEntities.add(transactionEntity);
         }
         return transactionEntities;
     }
 
-    public List<TransactionEntity> getByCategory(String category){
+    public List<TransactionEntity> getByCategory(String category) {
         List<Entities> entities = transactionRepository.findByCategory(category);
         List<TransactionEntity> transactionEntities = new ArrayList<>();
-        for (Entities entities1 : entities){
+        for (Entities entities1 : entities) {
             TransactionEntity transactionEntity = new TransactionEntity(entities1);
             transactionEntities.add(transactionEntity);
         }
         return transactionEntities;
     }
 
-    public List<Entities> TransactionEntityToEntity(List<TransactionEntity> transactionEntities){
+    public List<Entities> TransactionEntityToEntity(List<TransactionEntity> transactionEntities) {
         List<Entities> entities = new ArrayList<>();
 
-        for (TransactionEntity transaction : transactionEntities){
+        for (TransactionEntity transaction : transactionEntities) {
             Entities entities1 = new Entities();
             entities1.setCategory(transaction.getCategory());
             entities1.setDate(transaction.getDate());
@@ -53,5 +53,13 @@ public class TransactionService {
             entities.add(entities1);
         }
         return entities;
+    }
+
+    public void getBalance(){
+        List<Entities> salaryTransaction = transactionRepository.findByTransactionType("salary");
+        List<Entities> creditTransaction = transactionRepository.findByTransactionType("credit");
+        List<Entities> debitTransaction = transactionRepository.findByTransactionType("debit");
+
+
     }
 }

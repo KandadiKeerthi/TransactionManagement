@@ -15,19 +15,19 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping("/trans")
-    public String addTransactions(@RequestBody List<TransactionEntity> entities){
+    public String addTransactions(@RequestBody List<TransactionEntity> entities) {
         List<Entities> entities1 = transactionService.TransactionEntityToEntity(entities);
         transactionService.addTransaction(entities1);
         return "Added Successfully";
     }
 
     @GetMapping
-    public List<TransactionEntity> getAllTransaction(){
+    public List<TransactionEntity> getAllTransaction() {
         return transactionService.getAllTransactions();
     }
 
     @GetMapping("/{category}")
-    public List<TransactionEntity> getByCategory(@PathVariable String category){
+    public List<TransactionEntity> getByCategory(@PathVariable String category) {
         return transactionService.getByCategory(category);
     }
 }

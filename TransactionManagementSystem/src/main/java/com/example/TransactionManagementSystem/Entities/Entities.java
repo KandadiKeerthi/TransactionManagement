@@ -4,9 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -15,11 +14,12 @@ public class Entities {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Date date;
+    private LocalDate date;
     private String category;
     private String name;
     private String source;
     private Long amount;
+    private String transactionType;
 
     public Integer getId() {
         return id;
@@ -61,12 +61,20 @@ public class Entities {
         this.amount = amount;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 
     @Override
@@ -78,6 +86,7 @@ public class Entities {
                 ", name='" + name + '\'' +
                 ", source='" + source + '\'' +
                 ", amount=" + amount +
+                ", transactionType='" + transactionType + '\'' +
                 '}';
     }
 }
