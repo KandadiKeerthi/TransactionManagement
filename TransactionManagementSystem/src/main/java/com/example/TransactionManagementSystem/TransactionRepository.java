@@ -11,5 +11,4 @@ public interface TransactionRepository extends JpaRepository<Entities, Integer> 
 
     List<Entities> findByCategory(String category);
 
-    List<Entities> findByTransactionType(String transactionType);
 }
