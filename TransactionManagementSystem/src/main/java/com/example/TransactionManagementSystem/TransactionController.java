@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 @RestController
@@ -17,7 +16,7 @@ public class TransactionController {
     @Autowired
     TransactionService transactionService;
 
-    @PostMapping("/trans")
+    @PostMapping
     public String addTransactions(@RequestBody List<TransactionEntity> entities) {
         List<Entities> entities1 = transactionService.TransactionEntityToEntity(entities);
         transactionService.addTransaction(entities1);
@@ -25,8 +24,12 @@ public class TransactionController {
     }
 
     @GetMapping
-    public List<TransactionEntity> getAllTransaction() {
-        return transactionService.getAllTransactions();
+    public List<TransactionEntity> getAllTransaction(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) LocalDate from,
+            @RequestParam(required = false) LocalDate to
+    ) {
+        return transactionService.getAllTransactions(category, from, to);
     }
 
     @GetMapping("/{category}")
@@ -35,24 +38,12 @@ public class TransactionController {
     }
 
     @GetMapping("/balance")
-    public BalanceDto getBalance(){
-        return transactionService.getBalance();
+    public BalanceDto getBalance(@RequestParam(required = false) String category,
+                                 @RequestParam(required = false) LocalDate from,
+                                 @RequestParam(required = false) LocalDate to) {
+        return transactionService.getBalanceByCategory(category,from,to);
+
     }
 
-    @GetMapping("/{category}/balance")
-    public BalanceDto getBalanceByCategory(@PathVariable String category){
-        return transactionService.getBalanceByCategory(category);
-    }
 
-    @GetMapping("/balance/{month}")
-    public BalanceDto getBalanceByMonth(@PathVariable String month){
-        int monthNumber = convertMonthToNumber(month);
-        int currentYear = LocalDate.now().getYear();
-
-        return transactionService.getBalanceByMonth(monthNumber, currentYear);
-    }
-
-    private int convertMonthToNumber(String month){
-        return Month.valueOf(month.toUpperCase()).getValue();
-    }
 }

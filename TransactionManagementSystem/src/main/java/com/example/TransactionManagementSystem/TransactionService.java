@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +21,18 @@ public class TransactionService {
         System.out.println("After " + transactionRepository.findAll());
     }
 
-    public List<TransactionEntity> getAllTransactions() {
+    public List<TransactionEntity> getAllTransactions(String category, LocalDate from, LocalDate to) {
         List<Entities> entitiesList = transactionRepository.findAll();
         List<TransactionEntity> transactionEntities = new ArrayList<>();
         for (Entities entities : entitiesList) {
-            TransactionEntity transactionEntity = new TransactionEntity(entities);
-            transactionEntities.add(transactionEntity);
+            boolean categoryMatch = (category == null || entities.getCategory().equalsIgnoreCase(category));
+            boolean fromMatch = (from == null || !entities.getDate().isBefore(from));
+            boolean toMatch = (to == null || !entities.getDate().isAfter(to));
+
+            if (categoryMatch && fromMatch && toMatch) {
+                TransactionEntity transactionEntity = new TransactionEntity(entities);
+                transactionEntities.add(transactionEntity);
+            }
         }
         return transactionEntities;
     }
@@ -59,76 +64,19 @@ public class TransactionService {
         return entities;
     }
 
-    public BalanceDto getBalance() {
-        List<Entities> list = transactionRepository.findAll();
-        BalanceDto balanceDto = new BalanceDto();
-        double salary = 0;
-        double debit = 0;
-        double credit = 0;
-        for (Entities entities1 : list) {
-            if (entities1.getTransactionType().equals("salary")) {
-                salary = salary + entities1.getAmount();
-            } else if (entities1.getTransactionType().equals("debit")) {
-                debit = debit + entities1.getAmount();
-            } else if (entities1.getTransactionType().equals("credit")) {
-                credit = credit + entities1.getAmount();
-            }
-        }
-        balanceDto.setTotalAmount(salary + credit);
-        balanceDto.setExpenses(debit);
-        balanceDto.setBalance((salary + credit) - debit);
-
-        return balanceDto;
-    }
-
-    public BalanceDto getBalanceByCategory(String category) {
-        List<Entities> entities = transactionRepository.findByCategory(category);
-        BalanceDto balanceDto = new BalanceDto();
-        double salary = 0;
-        double debit = 0;
-        double credit = 0;
-        for (Entities entities1 : entities) {
-            if (entities1.getTransactionType().equals("salary")) {
-                salary = salary + entities1.getAmount();
-            } else if (entities1.getTransactionType().equals("debit")) {
-                debit = debit + entities1.getAmount();
-            } else if (entities1.getTransactionType().equals("credit")) {
-                credit = credit + entities1.getAmount();
-            }
-        }
-        balanceDto.setTotalAmount(salary);
-        balanceDto.setExpenses(debit);
-        balanceDto.setBalance((salary + credit) - debit);
-
-        return balanceDto;
-    }
-
-    public BalanceDto getBalanceByMonth(int month, int year){
+    public BalanceDto getBalanceByCategory(String category, LocalDate from, LocalDate to) {
         List<Entities> entities = transactionRepository.findAll();
-        BalanceDto balanceDto = new BalanceDto();
-        double salary = 0;
-        double debit = 0;
-        double credit = 0;
-
-        for (Entities entities1 : entities){
-            LocalDate date = entities1.getDate();
-
-            if (date.getMonthValue() == month && date.getYear() == year){
-                if (entities1.getTransactionType().equals("salary")) {
-                    salary = salary + entities1.getAmount();
-                } else if (entities1.getTransactionType().equals("debit")) {
-                    debit = debit + entities1.getAmount();
-                } else if (entities1.getTransactionType().equals("credit")) {
-                    credit = credit + entities1.getAmount();
-                }
-
+        List<Entities> entitiesList = new ArrayList<>();
+        for (Entities entities1 : entities) {
+            boolean categoryMatch = (category == null || entities1.getCategory().equalsIgnoreCase(category));
+            boolean fromMatch = (from == null || !entities1.getDate().isBefore(from));
+            boolean toMatch = (to == null || !entities1.getDate().isAfter(to));
+            if (categoryMatch && fromMatch && toMatch) {
+                entitiesList.add(entities1);
             }
         }
-        balanceDto.setTotalAmount(salary);
-        balanceDto.setExpenses(debit);
-        balanceDto.setBalance((salary + credit) - debit);
-
-        return balanceDto;
+        return new BalanceDto(entitiesList);
     }
+
 }
 
