@@ -1,4 +1,4 @@
-package com.example.TransactionManagementSystem;
+package com.example.TransactionManagementSystem.repository;
 
 import com.example.TransactionManagementSystem.Entities.Entities;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +10,5 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Entities, Integer> {
 
     List<Entities> findByCategory(String category);
-
+    boolean existsByName(String category);
 }

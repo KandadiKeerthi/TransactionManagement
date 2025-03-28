@@ -1,8 +1,9 @@
-package com.example.TransactionManagementSystem;
+package com.example.TransactionManagementSystem.service;
 
 import com.example.TransactionManagementSystem.Entities.BalanceDto;
 import com.example.TransactionManagementSystem.Entities.Entities;
 import com.example.TransactionManagementSystem.Entities.TransactionEntity;
+import com.example.TransactionManagementSystem.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
