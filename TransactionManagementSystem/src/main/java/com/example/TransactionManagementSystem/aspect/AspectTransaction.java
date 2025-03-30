@@ -24,9 +24,7 @@ public class AspectTransaction {
     ValidationHelper validationHelper;
 
     @Before("execution(* com.example.TransactionManagementSystem.controller.TransactionController.addTransactions(..)) && args(transactionEntities)")
-    public void validation(List<TransactionEntity> transactionEntities){
-
-        System.out.println("working");
+    public void validation(List<TransactionEntity> transactionEntities) {
 
         for (TransactionEntity entities1 : transactionEntities){
 
