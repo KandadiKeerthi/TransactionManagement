@@ -1,31 +1,26 @@
-package com.example.TransactionManagementSystem.Entities;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.example.TransactionManagementSystem.entities;
 
 import java.time.LocalDate;
 
-@Entity
-public class Entities {
+public class TransactionDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private LocalDate date;
     private String category;
     private String name;
     private String source;
+    private LocalDate date;
     private Long amount;
     private String transactionType;
 
-    public Integer getId() {
-        return id;
+    public TransactionDto() {
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public TransactionDto(Entities entities) {
+        this.category = entities.getCategory();
+        this.name = entities.getName();
+        this.source = entities.getSource();
+        this.date = entities.getDate();
+        this.amount = entities.getAmount();
+        this.transactionType = entities.getTransactionType();
     }
 
     public String getCategory() {
@@ -52,20 +47,20 @@ public class Entities {
         this.source = source;
     }
 
-    public Long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Long amount) {
-        this.amount = amount;
-    }
-
     public LocalDate getDate() {
         return date;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 
     public String getTransactionType() {
@@ -78,12 +73,11 @@ public class Entities {
 
     @Override
     public String toString() {
-        return "Entities{" +
-                "id=" + id +
-                ", date=" + date +
-                ", category='" + category + '\'' +
+        return "TransactionEntity{" +
+                "category='" + category + '\'' +
                 ", name='" + name + '\'' +
                 ", source='" + source + '\'' +
+                ", date=" + date +
                 ", amount=" + amount +
                 ", transactionType='" + transactionType + '\'' +
                 '}';

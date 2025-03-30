@@ -1,12 +1,10 @@
 package com.example.TransactionManagementSystem.controller;
 
-import com.example.TransactionManagementSystem.Entities.BalanceDto;
-import com.example.TransactionManagementSystem.Entities.Entities;
-import com.example.TransactionManagementSystem.Entities.TransactionEntity;
+import com.example.TransactionManagementSystem.entities.BalanceDto;
+import com.example.TransactionManagementSystem.entities.Entities;
+import com.example.TransactionManagementSystem.entities.TransactionDto;
 import com.example.TransactionManagementSystem.service.TransactionService;
-import com.example.TransactionManagementSystem.validations.ValidationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +18,16 @@ public class TransactionController {
 
     @Autowired
     TransactionService transactionService;
-    @Autowired
-    ValidationHelper validationHelper;
 
     @PostMapping
-    public ResponseEntity<String> addTransactions(@Validated @RequestBody List<TransactionEntity> entities) {
-        List<Entities> entities1 = transactionService.TransactionEntityToEntity(entities);
+    public ResponseEntity<String> addTransactions(@Validated @RequestBody List<TransactionDto> entities) {
+        List<Entities> entities1 = transactionService.transactionEntityToEntity(entities);
         transactionService.addTransaction(entities1);
         return ResponseEntity.ok("Added Successfully");
     }
 
     @GetMapping
-    public List<TransactionEntity> getAllTransaction(
+    public List<TransactionDto> getAllTransaction(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) LocalDate from,
             @RequestParam(required = false) LocalDate to
@@ -40,7 +36,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{category}")
-    public List<TransactionEntity> getByCategory(@PathVariable String category) {
+    public List<TransactionDto> getByCategory(@PathVariable String category) {
         return transactionService.getByCategory(category);
     }
 
@@ -49,8 +45,5 @@ public class TransactionController {
                                  @RequestParam(required = false) LocalDate from,
                                  @RequestParam(required = false) LocalDate to) {
         return transactionService.getBalanceByCategory(category,from,to);
-
     }
-
-
 }

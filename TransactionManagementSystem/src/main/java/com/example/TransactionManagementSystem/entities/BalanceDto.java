@@ -1,4 +1,4 @@
-package com.example.TransactionManagementSystem.Entities;
+package com.example.TransactionManagementSystem.entities;
 
 import java.util.List;
 
@@ -24,7 +24,6 @@ public class BalanceDto {
         this.totalAmount = (salary + credit);
         this.expenses = (debit);
         this.balance = ((salary + credit) - debit);
-
     }
 
     public double getTotalAmount() {

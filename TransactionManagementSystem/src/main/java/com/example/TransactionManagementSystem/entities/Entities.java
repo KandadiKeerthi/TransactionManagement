@@ -1,26 +1,31 @@
-package com.example.TransactionManagementSystem.Entities;
+package com.example.TransactionManagementSystem.entities;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.time.LocalDate;
 
-public class TransactionEntity {
+@Entity
+public class Entities {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private LocalDate date;
     private String category;
     private String name;
     private String source;
-    private LocalDate date;
     private Long amount;
     private String transactionType;
 
-    public TransactionEntity() {
+    public Integer getId() {
+        return id;
     }
 
-    public TransactionEntity(Entities entities) {
-        this.category = entities.getCategory();
-        this.name = entities.getName();
-        this.source = entities.getSource();
-        this.date = entities.getDate();
-        this.amount = entities.getAmount();
-        this.transactionType = entities.getTransactionType();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCategory() {
@@ -47,20 +52,20 @@ public class TransactionEntity {
         this.source = source;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public Long getAmount() {
         return amount;
     }
 
     public void setAmount(Long amount) {
         this.amount = amount;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public String getTransactionType() {
@@ -73,11 +78,12 @@ public class TransactionEntity {
 
     @Override
     public String toString() {
-        return "TransactionEntity{" +
-                "category='" + category + '\'' +
+        return "Entities{" +
+                "id=" + id +
+                ", date=" + date +
+                ", category='" + category + '\'' +
                 ", name='" + name + '\'' +
                 ", source='" + source + '\'' +
-                ", date=" + date +
                 ", amount=" + amount +
                 ", transactionType='" + transactionType + '\'' +
                 '}';
