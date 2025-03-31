@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.example.TransactionManagementSystem.constants.SuccessMessages.TRANSACTION_ADD_SUCCESS;
+
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -23,7 +25,7 @@ public class TransactionController {
     public ResponseEntity<String> addTransactions(@Validated @RequestBody List<TransactionDto> entities) {
         List<Entities> entities1 = transactionService.transactionEntityToEntity(entities);
         transactionService.addTransaction(entities1);
-        return ResponseEntity.ok("Added Successfully");
+        return ResponseEntity.ok(TRANSACTION_ADD_SUCCESS);
     }
 
     @GetMapping
