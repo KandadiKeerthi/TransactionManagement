@@ -11,10 +11,10 @@ public class Filters {
     }
 
     public static Stream<Entities> filterFromDate(Stream<Entities> input, LocalDate date) {
-        return input.filter(element -> date == null || !element.getDate().isBefore(date));
+        return input.filter(element -> element.getDate().isAfter(date));
     }
 
     public static Stream<Entities> filterToDate(Stream<Entities> input, LocalDate date) {
-        return input.filter(element -> date == null || !element.getDate().isAfter(date));
+        return input.filter(element -> element.getDate().isBefore(date));
     }
 }

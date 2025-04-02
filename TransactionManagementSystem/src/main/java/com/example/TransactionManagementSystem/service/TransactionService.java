@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Service
@@ -25,10 +26,17 @@ public class TransactionService {
 
     public List<TransactionDto> getAllTransactions(String category, LocalDate from, LocalDate to) {
         List<Entities> entitiesList = transactionRepository.findAll();
+
         Stream<Entities> filterResult = entitiesList.stream();
-        filterResult = Filters.filterCategory(filterResult, category);
-        filterResult = Filters.filterFromDate(filterResult, from);
-        filterResult = Filters.filterToDate(filterResult, to);
+        if (Objects.nonNull(category))
+            filterResult = Filters.filterCategory(filterResult, category);
+
+        if (Objects.nonNull(from))
+            filterResult = Filters.filterFromDate(filterResult, from);
+
+        if (Objects.nonNull(to))
+            filterResult = Filters.filterToDate(filterResult, to);
+
         return filterResult.map(TransactionDto::new).toList();
     }
 
@@ -61,10 +69,16 @@ public class TransactionService {
 
     public BalanceDto getBalanceByCategory(String category, LocalDate from, LocalDate to) {
         List<Entities> entities = transactionRepository.findAll();
+
         Stream<Entities> filterResult = entities.stream();
-        filterResult = Filters.filterCategory(filterResult, category);
-        filterResult = Filters.filterFromDate(filterResult, from);
-        filterResult = Filters.filterToDate(filterResult, to);
+        if (Objects.nonNull(category))
+            filterResult = Filters.filterCategory(filterResult, category);
+
+        if (Objects.nonNull(from))
+            filterResult = Filters.filterFromDate(filterResult, from);
+
+        if (Objects.nonNull(to))
+            filterResult = Filters.filterToDate(filterResult, to);
         return new BalanceDto(filterResult.toList());
     }
 
