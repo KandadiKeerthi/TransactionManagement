@@ -3,7 +3,9 @@ package com.example.TransactionManagementSystem.service;
 import com.example.TransactionManagementSystem.entities.BalanceDto;
 import com.example.TransactionManagementSystem.entities.Entities;
 import com.example.TransactionManagementSystem.entities.TransactionDto;
+import com.example.TransactionManagementSystem.entities.UserEntity;
 import com.example.TransactionManagementSystem.repository.TransactionRepository;
+import com.example.TransactionManagementSystem.repository.UserRepository;
 import com.example.TransactionManagementSystem.utils.Filters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,26 @@ public class TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
 
-    public void addTransaction(List<Entities> entities) {
+    @Autowired
+    UserRepository userRepository;
+
+    public void addTransaction(String userName, List<Entities> entities) {
+        UserEntity user = userRepository.findByEmail(userName).orElseThrow();
+        for (Entities entities1: entities){
+            entities1.setUser(user);
+        }
         transactionRepository.saveAll(entities);
     }
 
-    public List<TransactionDto> getAllTransactions(String category, LocalDate from, LocalDate to) {
-        List<Entities> entitiesList = transactionRepository.findAll();
+    public List<TransactionDto> getAllTransactions(String userName, String category, LocalDate from, LocalDate to) {
+        List<Entities> entitiesList;
+
+        if (Objects.nonNull(userName)){
+            UserEntity user = userRepository.findByEmail(userName).orElseThrow();
+            entitiesList = user.getEntitiesList();
+        } else {
+            entitiesList = transactionRepository.findAll();
+        }
 
         Stream<Entities> filterResult = entitiesList.stream();
         if (Objects.nonNull(category))
@@ -67,10 +83,18 @@ public class TransactionService {
         return entities;
     }
 
-    public BalanceDto getBalanceByCategory(String category, LocalDate from, LocalDate to) {
-        List<Entities> entities = transactionRepository.findAll();
+    public BalanceDto getBalanceByUser(String userName, String category, LocalDate from, LocalDate to) {
 
-        Stream<Entities> filterResult = entities.stream();
+        List<Entities> entitiesList;
+
+        if (Objects.nonNull(userName)){
+            UserEntity user = userRepository.findByEmail(userName).orElseThrow();
+            entitiesList = user.getEntitiesList();
+        } else {
+            entitiesList = transactionRepository.findAll();
+        }
+
+        Stream<Entities> filterResult = entitiesList.stream();
         if (Objects.nonNull(category))
             filterResult = Filters.filterCategory(filterResult, category);
 

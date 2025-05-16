@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Entities, Integer> {
     List<Entities> findByCategory(String category);
+
 }

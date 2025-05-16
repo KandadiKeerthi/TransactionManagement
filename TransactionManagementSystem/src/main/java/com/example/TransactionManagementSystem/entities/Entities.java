@@ -1,9 +1,6 @@
 package com.example.TransactionManagementSystem.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -19,6 +16,9 @@ public class Entities {
     private String source;
     private Long amount;
     private String transactionType;
+
+    @ManyToOne
+    private UserEntity user;
 
     public Integer getId() {
         return id;
@@ -74,6 +74,14 @@ public class Entities {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     @Override
